@@ -22,7 +22,7 @@ Updated: YYYY-MM-DD · Hub: [STATE.md](STATE.md)
 
 ## Capture evidence
 ```bash
-<screenshot command, e.g. npx playwright screenshot http://localhost:<port>/<path> docs/sdlc/evidence/M<n>/<name>.png>
+<screenshot command with a PINNED version, e.g. npx -y playwright@1.64.0 screenshot --browser chromium http://localhost:<port>/<path> docs/sdlc/evidence/M<n>/<name>.png>
 <or a CLI transcript: ./app <args> 2>&1 | tee docs/sdlc/evidence/M<n>/<name>.txt>
 ```
 Limitations: <anything that can't be captured here and must be ⚠️ manual>

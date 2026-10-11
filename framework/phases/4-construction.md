@@ -47,7 +47,7 @@ There's no user gate here. Go straight on to phase 5.
 
 ## M1 (walking skeleton) also must
 - create the project scaffold, test harness and lint/format config, following the runbook;
-- prove **every** runbook command, including the screenshot or transcript capture and the deploy (or a production-like local run). Fix the runbook wherever reality differs;
+- prove **every** runbook command, including the screenshot or transcript capture and the deploy. The deploy goes to a production-like local run unless the user approved an external target at the Design gate, and even then confirm right before the first external deploy (see the outward-facing rule in cycle.md). Fix the runbook wherever reality differs;
 - add `.gitignore` and `.env.example`. Secrets never go into git.
 
 ## Definition of done (every milestone)

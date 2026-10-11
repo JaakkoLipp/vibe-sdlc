@@ -33,9 +33,14 @@
      - configuration and secrets.
    - **Stack:** the choices from step 1, each with its reason (D-n).
    - **Detail design** only where a wrong guess is expensive: screen layouts as wireframes for UI requirements, pseudo-code for tricky rules, schemas for persisted data.
-4. **Deployment target:** decide it now, because M1 has to deploy. The options run from a local production-like build up to the cloud. Record cost and credential needs. For a novice, prefer free hosting that needs the fewest accounts. List any accounts or keys the user will need to create as user actions, so they're shown at the Design gate.
+4. **Deployment target:** decide it now, because M1 has to deploy. The options run from a local production-like build up to the cloud. Record cost and credential needs. **Default to local** for M1. An external host is the user's decision: ask for it at the Design gate, and never assume it. For a novice, prefer free hosting that needs the fewest accounts. List any accounts or keys the user will need to create as user actions, so they're shown at the Design gate.
 5. **Runbook** (`runbook.md`): the exact commands to install, run, test, lint/typecheck, **capture screenshots or transcripts** and deploy. Pick verification tooling that works on this machine:
-   - **Web:** Playwright. Check that `npx playwright --version` works and that a browser is installed (`npx playwright install chromium`). If system dependencies need sudo, tell the user exactly what to run.
+   - **Web:** Playwright, **with a pinned version**: either a dev dependency of the project or a pinned command in the runbook (`npx -y playwright@<version> screenshot …`).
+     - Pin the version that `npx -y playwright --version` reports **on this machine now**, not a version from memory.
+     - Install the browser for that version with `npx -y playwright@<version> install chromium`. This needs no sudo and is a no-op if it's already installed.
+     - Never rely on a floating `npx playwright`. Each release expects a newer browser build, which breaks capture in later sessions.
+     - **Prove that one screenshot works now, at any size.** Screenshot a throwaway HTML file and Read the image. If it fails, fix it, or flag it at the Design gate.
+     - If system libraries are missing, `sudo npx playwright install-deps chromium` is a user action.
    - **CLI:** scripted sessions whose output is saved as a transcript.
    - **API:** curl or HTTP test scripts.
    - **Mobile or desktop:** state what's possible and what will be ⚠️ manual.

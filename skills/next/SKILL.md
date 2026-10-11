@@ -41,4 +41,4 @@ Follow cycle.md: Plan → Challenge → Implement → Verify → Update. Update 
 - verification still fails after 3 attempts, or a revision touches scope or a Must requirement: stop and ask;
 - the conversation is getting long mid-milestone: finish the current step, update STATE.md, commit, give the continuation prompt, then stop.
 
-When moving from one milestone to the next or from one phase to the next **without** a gate (for example from phase 4 to 5), carry on in the same chat.
+When moving from one milestone to the next or from one phase to the next **without** a gate (for example from phase 4 to 5), carry on in the same chat, but **read the new phase's file before its Plan step**.

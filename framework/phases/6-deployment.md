@@ -26,7 +26,7 @@
 - cost surprises;
 - missing user docs.
 
-**Gate before acting.** Production deploys, publishing, DNS changes, creating paid resources and sending anything to external services are outward-facing and often irreversible. Present the plan and get explicit approval (**Go-live gate**) before doing any of them. Staging and preview deploys follow whatever the design gate already approved.
+**Gate before acting.** Production deploys, publishing, DNS changes, creating paid resources and sending anything to external services are outward-facing and often irreversible. Present the plan and get explicit approval (**Go-live gate**) before doing any of them. Staging and preview deploys to external services also need that explicit confirmation, unless the user approved that exact target at the Design gate.
 
 **Implement.**
 - Pipeline or deploy scripts, production config, `.env.example` and a migration script with a backup step.

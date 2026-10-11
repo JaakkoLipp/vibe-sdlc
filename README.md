@@ -175,11 +175,12 @@ rm ~/.claude/skills/vibe-sdlc
 
 ## Prerequisites for the Verify step
 
-For screenshots of web apps, the framework uses Playwright. The design phase checks for it and puts the exact commands in the runbook, and M1 proves they work. On WSL or Linux, installing browser system dependencies may need `sudo npx playwright install-deps chromium`. If screenshots aren't possible, Claude says so at design time and marks those criteria ⚠️ rather than passing them.
+For screenshots of web apps, the framework uses Playwright with a **pinned version**, so a new Playwright release can't break capture between sessions. The design phase puts the exact commands in the runbook, and M1 proves they work. Installing the browser (`npx -y playwright@<version> install chromium`) needs no sudo. Only missing system libraries do (`sudo npx playwright install-deps chromium`). If screenshots aren't possible, Claude says so at design time and marks those criteria ⚠️ rather than passing them.
 
 ## Design notes
 
 - **Hybrid schedule, same six phases.** Running phases 1–3 once and then repeating 4→5 per milestone avoids waterfall's late surprises. M1 deploys, so deployment problems show up in week one.
 - **The challenger and verifier are separate agents** because self-review is weak. The challenger can't edit anything, and the verifier can't touch product code.
+- **Nothing goes outside your machine without asking.** Publishing, external deploys (even previews), creating repos or cloud resources, and anything that costs money need explicit approval in every phase. Until go-live, deploys are local.
 - **The gates are enforced by instructions, not hooks.** The skills follow the gate protocol, and the doc `Status:` fields record approvals.
 - **Commits happen at every Update step, and nothing is ever pushed.** Each commit is a rollback point. Releases are tagged locally in phase 6.

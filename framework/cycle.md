@@ -16,12 +16,14 @@ M2 … Mn:              4 Construction → 5 Acceptance
 
 Phases 1–3 aren't repeated per milestone. If a later discovery invalidates them, they get **revised** (see below), not redone.
 
+**Entering a phase: read its file in `phases/` first.** Do this every time, including when moving to the next phase in the same chat and when a tiny project combines phases 1–3. The phase files hold checks this file doesn't, such as the toolchain check and screenshot proof in phase 3. Tiny projects skip a phase's ceremony, never its checks.
+
 **Entry point.** The `start` skill decides it and stores it in STATE.md:
 - **From a problem or idea:** phases 1–3 run as written.
 - **From existing docs** (a PRD, spec, ADRs, design notes): import them into product.md, requirements.md and, if they cover it, architecture.md. Link the sources and mark the gaps as assumptions. Run the challenger on the imported set, then pass a single **Import gate**. Phases the docs fully cover aren't interviewed again.
 
 **Size** reflects how much there is to build *and* to operate. Count the features, and also the moving parts: a server, auth, push notifications, integrations, hosting, data migration. A short feature list that needs a backend and deployment is standard, not tiny. Size never decides which phases get skipped. The entry point does that.
-- **tiny** (an afternoon; runs locally or as a static page): phases 1–3 in one sitting with a single gate. Each doc is a few lines, there are one or two milestones, and the Challenge step is done inline instead of by a subagent.
+- **tiny** (an afternoon; runs locally or as a static page): phases 1–3 in one sitting with a single gate. Still read `1-concept.md`, `2-requirements.md` and `3-design.md` as you pass through each one. Each doc is a few lines, there are one or two milestones, and the Challenge step is done inline instead of by a subagent.
 - **standard:** as described here.
 - **large:** phases 1–3 cover the whole product at outline depth. The roadmap groups milestones into releases, and only the next release is detailed.
 
@@ -100,6 +102,15 @@ Every commit made by the framework follows these rules:
 | Revision | any change to scope or to a *Must* requirement |
 
 Between gates, run cycles on your own. Stop between gates only for questions that change the outcome, failures you can't fix, or revisions.
+
+**Outward-facing actions need explicit approval in every phase, not just phase 6.** These include:
+- publishing or pushing;
+- deploying to any hosted or public target, including previews and staging;
+- creating external resources such as repos, sites, cloud resources or DNS records;
+- anything that costs money;
+- sending project data to a third-party service.
+
+Ask right before the first time each one happens, even when the plan says to do it. The default deploy target until go-live is local (a production-like build run on this machine).
 
 ### Gate protocol
 1. Before asking, set STATE.md to `Waiting on: <gate> approval`, and set its continuation prompt to `… · at <gate> gate (awaiting approval)`. That way, a fresh chat opened now re-presents the gate instead of skipping past it. Commit.
