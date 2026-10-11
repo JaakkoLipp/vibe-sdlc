@@ -7,7 +7,7 @@ Size: tiny | standard | large
 Phase: 1 Concept
 Milestone: none
 Cycle step: Plan · not started
-Waiting on: nothing
+Waiting on: nothing | <gate> approval | you – <action>
 Next action: <one concrete sentence, e.g. "Ask round 2: personas and success metric">
 
 ## Continue in a fresh chat
@@ -24,6 +24,7 @@ Next action: <one concrete sentence, e.g. "Ask round 2: personas and success met
 - [ ] 7 Evolve
 
 ## Settings
+User: novice | experienced | expert · Entry: idea | existing docs (<links>)
 Gates: phase + milestone, with a fresh chat after each gate · Commits: at each Update step, never push · Docs: docs/sdlc/
 
 ## Recent discoveries

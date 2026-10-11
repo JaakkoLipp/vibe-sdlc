@@ -17,9 +17,20 @@ Every step:  Plan → Challenge → Implement → Verify → Update
 |------|--------------|
 | **Plan** | A plan of at most one screen, including *how it will be verified*. Risky unknowns get a time-boxed spike. |
 | **Challenge** | A fresh-context `challenger` agent attacks the plan under three headings: missing cases, unnecessary complexity and conflicting assumptions. |
-| **Implement** | One agent (the main session) owns the change. Subagents only explore, review or verify. |
+| **Implement** | One agent (the main session) owns the change, following coding rules adapted from the [Karpathy guidelines](https://x.com/karpathy/status/2015883857489522876): think before coding, simplicity first, surgical changes, goal-driven verification. Subagents only explore, review or verify. |
 | **Verify** | Evidence, not assertion: tests, launching the app, screenshots that Claude actually looks at, and the real flow. Acceptance is checked by an independent `verifier` agent. |
 | **Update** | Decisions and discoveries are logged, docs and STATE.md updated, the next step set, and a git commit made. |
+
+## Who it's for
+
+- **Novices** can start from a plain problem statement ("I keep forgetting to water my plants"). Claude:
+  - talks in plain language;
+  - proposes 2–3 solution concepts, including "just use an existing app" when that's the honest answer;
+  - makes the technical decisions, with a one-line reason for each;
+  - walks you through anything only you can do, such as creating accounts, adding API keys or installing tools, one step at a time. Secrets never go through the chat.
+- **Experienced and expert engineers** get terse summaries, technical forks put to them as questions, and their stated stack treated as a constraint. If you already have a PRD or spec, `start` imports it instead of interviewing you again. You get one Import gate, a fresh-context challenge of the imported docs, and then straight into design. Ask for speed, and the Import gate folds into the Design gate.
+
+Claude infers your level from how you describe things, or asks once. Change it at any time by saying "treat me as an expert".
 
 ## Quick start
 
@@ -32,8 +43,10 @@ mkdir ~/projects/habit-tracker && cd ~/projects/habit-tracker
 Then open Claude Code there and run:
 
 ```
-/vibe-sdlc:start a habit tracker web app for me and my partner
+/vibe-sdlc:start my partner and I keep breaking our habit streaks and want to track them together
 ```
+
+You can describe a problem, an idea, or point it at an existing requirements doc: `/vibe-sdlc:start build the relay described in docs/prd.md`.
 
 Give each project its own directory. If you start in a directory that already has code, the framework adopts that code as the baseline.
 
@@ -49,6 +62,7 @@ Give each project its own directory. If you start in a directory that already ha
 ## Gates and fresh chats
 
 Claude stops for your approval at these gates:
+- **Import** (only when starting from existing docs)
 - **Concept**
 - **Requirements**
 - **Design** (architecture and roadmap)

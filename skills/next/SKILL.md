@@ -25,12 +25,15 @@ Instruction: $ARGUMENTS
 ## 2. Work out where you are
 
 - **`Waiting on: <approval>`:** present that gate again (Gate protocol in cycle.md). Do nothing else until it's answered.
+- **`Waiting on: you – <action>`:** check whether the user has done it. Verify it if you can. If they have, continue. If not, repeat the steps briefly.
 - **A step marked `in progress`:** the last session was interrupted. Run `git status` and `git diff --stat` to see the partial work, compare it with the plan's ticked steps, and **resume that step**. Don't redo finished work, and don't throw away uncommitted changes without asking.
 - **Otherwise:** start the step named in `Next action`.
 
-Tell the user in one or two lines where you're picking up, for example: "Resuming M2 · Implement · step 3/5 (the streak calculation; 2 files changed since the last commit)."
+Tell the user in one or two lines where you're picking up, in their terms (a novice gets no IDs). For example: "Resuming M2 · Implement · step 3/5 (the streak calculation; 2 files changed since the last commit)."
 
 ## 3. Run cycles until a gate
+
+Work at the user level recorded in STATE.md (*Adapting to the user* in cycle.md).
 
 Follow cycle.md: Plan → Challenge → Implement → Verify → Update. Update STATE.md at the start and end of each step, and commit at every Update step. Keep going through cycles and phases on your own until one of these happens:
 - you reach a **gate**: run the Gate protocol, finishing with the continuation prompt, then stop;

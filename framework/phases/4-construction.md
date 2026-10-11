@@ -30,6 +30,7 @@ Each step should leave the code working. Read the relevant code first, so the st
 Follow the codebase's existing conventions. Add the milestone's **acceptance tests** (automated end-to-end checks of its Given/When/Then criteria) wherever the project's tooling allows it.
 
 **Verify** at component and integration level, following the runbook:
+- **review your own diff** (`git diff`) against the coding rules in cycle.md. Check that every changed line traces to a step's FR, that there's no speculative code and no unrelated edits, and that anything your change left unused has been removed;
 - the full unit and integration suite, lint, typecheck and build;
 - **launch the app and walk through the milestone's journey** for real;
 - take screenshots of UI states, save them to `evidence/Mn/`, and **look at them**: check for broken layout, error text, empty states and placeholder text;

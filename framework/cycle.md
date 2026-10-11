@@ -16,8 +16,12 @@ M2 … Mn:              4 Construction → 5 Acceptance
 
 Phases 1–3 aren't repeated per milestone. If a later discovery invalidates them, they get **revised** (see below), not redone.
 
-**Sizing** is decided at start and stored in STATE.md:
-- **tiny** (an afternoon): run phases 1–3 in one sitting with a single gate. Each doc is a few lines, there are one or two milestones, and the Challenge step is done inline instead of by a subagent.
+**Entry point.** The `start` skill decides it and stores it in STATE.md:
+- **From a problem or idea:** phases 1–3 run as written.
+- **From existing docs** (a PRD, spec, ADRs, design notes): import them into product.md, requirements.md and, if they cover it, architecture.md. Link the sources and mark the gaps as assumptions. Run the challenger on the imported set, then pass a single **Import gate**. Phases the docs fully cover aren't interviewed again.
+
+**Size** reflects how much there is to build *and* to operate. Count the features, and also the moving parts: a server, auth, push notifications, integrations, hosting, data migration. A short feature list that needs a backend and deployment is standard, not tiny. Size never decides which phases get skipped. The entry point does that.
+- **tiny** (an afternoon; runs locally or as a static page): phases 1–3 in one sitting with a single gate. Each doc is a few lines, there are one or two milestones, and the Challenge step is done inline instead of by a subagent.
 - **standard:** as described here.
 - **large:** phases 1–3 cover the whole product at outline depth. The roadmap groups milestones into releases, and only the next release is detailed.
 
@@ -45,6 +49,22 @@ Fix whatever you can decide yourself. Turn the findings that need the user into 
 - **Trivial** (a file name, an existing helper): carry on and log it in the milestone's "Changes" section.
 - **Changes behaviour, scope or interface:** stop and use *Revising plans*.
 
+**Coding rules**, adapted from the [Karpathy guidelines](https://x.com/karpathy/status/2015883857489522876):
+- **Think before coding.** State your assumptions. If a step can be read in more than one way, present the readings instead of picking one silently. If something is unclear, stop, name what's confusing, and ask.
+- **Simplicity first.** Write the minimum code that meets the step's requirements:
+  - no features, options or configurability nobody asked for;
+  - no abstractions for code that's used once;
+  - no error handling for situations that can't happen.
+
+  If it could be a quarter of the size, rewrite it. Ask yourself whether a senior engineer would call it overcomplicated.
+- **Surgical changes.** Touch only what the step needs:
+  - Match the existing style, even if you'd do it differently.
+  - Don't "improve" adjacent code, comments or formatting, and don't refactor what isn't broken, unless the plan says to.
+  - Remove imports, variables and functions that *your* change left unused. If you notice pre-existing dead code, mention it rather than deleting it.
+
+  Every changed line should trace back to the step's requirement IDs.
+- **Goal-driven.** Each step has a Verify check, so loop until it passes. To add behaviour, write the failing test first, then make it pass. To fix a bug, write a test that reproduces it. Tests must pass before and after a refactor.
+
 ### 4. Verify
 Verification means **evidence, not assertion**. Check against the verification criteria from Plan, using the phase file's methods: run tests, launch the app, take screenshots and look at them, and exercise the real flow from the runbook. Save evidence under `docs/sdlc/evidence/<milestone>/`: screenshots and short output excerpts, not full logs.
 - On failure, go back to Implement. After 3 failed fix attempts on the same problem, stop and ask the user, showing what you tried.
@@ -71,6 +91,7 @@ Every commit made by the framework follows these rules:
 
 | Gate | When |
 |------|------|
+| Import | entry from existing docs: the imported product, requirements and (if covered) architecture |
 | Concept | end of phase 1: product.md and concept sketches |
 | Requirements | end of phase 2: requirements.md |
 | Design | end of phase 3: architecture.md and roadmap.md (and the runbook) |
@@ -82,14 +103,14 @@ Between gates, run cycles on your own. Stop between gates only for questions tha
 
 ### Gate protocol
 1. Before asking, set STATE.md to `Waiting on: <gate> approval`, and set its continuation prompt to `… · at <gate> gate (awaiting approval)`. That way, a fresh chat opened now re-presents the gate instead of skipping past it. Commit.
-2. Present a summary of what's being approved, not whole files. Include links, the top risks, and the key screenshots or evidence.
+2. Present a summary of what's being approved, not whole files, in the user's terms (see *Adapting to the user*). Include links, the top risks, and the key screenshots or evidence. List any **user actions** the next stage will need (see *When the user must act*), so they don't arrive as a surprise halfway through.
 3. Ask with these options: *Approve (Recommended)* / *Change something* / *Discuss*. Silence or an answer to a side question doesn't count as approval.
 4. On approval:
    - set the doc status to `approved (YYYY-MM-DD)`;
    - tick Progress in STATE.md and set `Waiting on: nothing`;
    - **rewrite** `Next action` as the next concrete step, with no leftover "on approval…" wording;
    - commit.
-5. **Hand off to a fresh chat.** Tell the user this is a good point to start a fresh chat, then give a ready-to-paste continuation prompt in a fenced block. Fill in the real values:
+5. **Hand off to a fresh chat.** Tell the user this is a good point to start a fresh chat, and how to do it: open a new chat, or type `/clear`. Then give a ready-to-paste continuation prompt in a fenced block, filled in with the real values. Also mention that just typing `continue` in a new chat in this folder works too, because the project state is loaded automatically.
 
    ```
    /vibe-sdlc:next Continue <project>: <phase> · <milestone, if any> "<name>" · start at <cycle step>. State: docs/sdlc/STATE.md
@@ -105,6 +126,35 @@ Between gates, run cycles on your own. Stop between gates only for questions tha
 - Ask open questions ("describe…") in plain text, at most 3, then end your turn.
 - If `AskUserQuestion` is unavailable, ask in plain text with numbered questions and lettered options, marking the recommended option.
 - After each round, show a "Settled so far" list of at most 8 bullets.
+
+## Adapting to the user
+
+STATE.md records `User: novice | experienced | expert`. The `start` skill sets it from what the user says and how they say it (any stated background, their vocabulary). If that's unclear, ask once, in the first round. The user can change it at any time, for example by saying "treat me as an expert".
+
+| | novice | experienced (default) | expert |
+|---|---|---|---|
+| Language in chat | Plain words. Keep IDs and jargon in the docs. If a term is unavoidable, explain it in a few words the first time | normal | terse; IDs and jargon are fine |
+| Technical decisions (stack, hosting, architecture) | You decide. State the choice and the reason in one line, and log it | ask on real forks, with a recommendation | ask on real forks; treat stated preferences as constraints |
+| Questions | about their goals and daily life, not technology | as in *Asking the user* | fewer, batched; accept "use your judgement" |
+| Starting a phase | one sentence on what the phase is for | none | none |
+| Gate summaries | what they'll be able to do, what you decided for them, and what they need to do next | as in *Gate protocol* | a short table with IDs, risks and deviations |
+| Defaults | tools that are already installed; free hosting with the fewest accounts | none | none |
+| Pace | one step at a time | normal | if they ask for speed, fold the Import gate into the Design gate, and show the import changes and assumptions there |
+
+## When the user must act
+
+Some steps only the user can do:
+- creating accounts and handling payment;
+- entering API keys or passwords;
+- installing anything that needs `sudo` or admin rights;
+- granting access;
+- anything on their phone or another device.
+
+When one comes up:
+- Give numbered steps, with each shell command in its own `bash` block. Say what success looks like, and how they (or you) can check it.
+- **Secrets never go through the chat.** Tell the user which file to put them in and in what format, for example `.env`, which is gitignored. Then check that the value is set without printing it.
+- **Novice:** one action at a time, saying exactly where to click. **Expert:** a checklist.
+- Set STATE.md to `Waiting on: you – <action>`, and carry on with any work that doesn't depend on it.
 
 ## Revising plans
 

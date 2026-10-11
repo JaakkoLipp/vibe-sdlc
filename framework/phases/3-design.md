@@ -13,8 +13,13 @@
 **Plan.** List the design decisions that are needed (stack, storage, structure, hosting, auth and so on) and the **top 1–3 technical risks**. Each risk gets a spike if it could invalidate the architecture. Spikes are time-boxed and throwaway, live in `spikes/<name>/` or on a branch, and their only output is a D-n entry.
 
 **Implement.**
-1. **Run the spikes first.** If one disproves an assumption, use *Revising plans* (cycle.md) before designing on top of it.
-2. **Architecture** (`architecture.md`, ≤150 lines):
+1. **Stack and toolchain.**
+   - Choose the stack: prefer boring, mainstream tools that agents know well, and give every choice a reason. How you decide depends on the user level (*Adapting to the user* in cycle.md). For a novice, you choose. For an expert, their stated preferences are constraints. Otherwise, on a real fork, give 2–3 options with a recommendation and ask.
+   - Then check the toolchain by running the version command for each tool the stack needs (`node -v`, `python3 --version`, `go version`, `docker --version` and so on).
+   - If a tool is missing: for a novice, prefer a stack that uses what's already installed when it fits just as well. Otherwise, make the install a user action (*When the user must act*), with the exact commands for this OS.
+   - Do this before the spikes, because they need the tools.
+2. **Run the spikes.** If one disproves an assumption, use *Revising plans* (cycle.md) before designing on top of it.
+3. **Architecture** (`architecture.md`, ≤150 lines):
    - context: the system boundary and external systems;
    - components C-n and their responsibilities;
    - data model;
@@ -26,16 +31,16 @@
      - error handling,
      - observability,
      - configuration and secrets.
-   - **Stack:** prefer boring, mainstream tools that agents know well. Every choice gets a reason. If there's a real fork, give 2–3 options with a recommendation and ask the user.
+   - **Stack:** the choices from step 1, each with its reason (D-n).
    - **Detail design** only where a wrong guess is expensive: screen layouts as wireframes for UI requirements, pseudo-code for tricky rules, schemas for persisted data.
-3. **Deployment target:** decide it now, because M1 has to deploy. The options run from a local production-like build up to the cloud. Record cost and credential needs.
-4. **Runbook** (`runbook.md`): the exact commands to install, run, test, lint/typecheck, **capture screenshots or transcripts** and deploy. Pick verification tooling that works on this machine:
+4. **Deployment target:** decide it now, because M1 has to deploy. The options run from a local production-like build up to the cloud. Record cost and credential needs. For a novice, prefer free hosting that needs the fewest accounts. List any accounts or keys the user will need to create as user actions, so they're shown at the Design gate.
+5. **Runbook** (`runbook.md`): the exact commands to install, run, test, lint/typecheck, **capture screenshots or transcripts** and deploy. Pick verification tooling that works on this machine:
    - **Web:** Playwright. Check that `npx playwright --version` works and that a browser is installed (`npx playwright install chromium`). If system dependencies need sudo, tell the user exactly what to run.
    - **CLI:** scripted sessions whose output is saved as a transcript.
    - **API:** curl or HTTP test scripts.
    - **Mobile or desktop:** state what's possible and what will be ⚠️ manual.
    If there's no way to take screenshots, **say so loudly now** rather than at acceptance.
-5. **Roadmap** (`roadmap.md`), ordered by **risk first, then value**:
+6. **Roadmap** (`roadmap.md`), ordered by **risk first, then value**:
    - **M1 = walking skeleton:** the thinnest end-to-end slice through every layer. It includes the project scaffold, one real journey (even if crude), the test harness, the screenshot/transcript pipeline and a deploy to the chosen target. It proves the runbook.
    - **M2…Mn = vertical slices.** Each delivers user-visible value and lists its FR IDs, a demo/exit criterion and its dependencies. Aim for milestones that fit in one chat session each.
    - Only the roadmap entries get written now. Each milestone's detailed plan is written when that milestone starts (phase 4 Plan).
