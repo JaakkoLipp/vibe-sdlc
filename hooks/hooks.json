@@ -1,0 +1,16 @@
+{
+  "description": "Tells Claude a vibe-sdlc project's current state at session start. Prints nothing when the repo isn't a vibe-sdlc project.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

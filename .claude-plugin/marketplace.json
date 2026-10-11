@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "vibe-sdlc",
+  "description": "vibe-sdlc: an SDLC vibecoding framework for Claude Code",
+  "owner": {
+    "name": "Jaakko Lipponen"
+  },
+  "plugins": [
+    {
+      "name": "vibe-sdlc",
+      "description": "A vibecoding framework that takes a project through the SDLC (concept, requirements, design, construction, acceptance, deployment, evolve). Every step runs the same cycle: plan, challenge, implement, verify, update.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

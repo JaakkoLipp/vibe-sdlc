@@ -1,0 +1,11 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "vibe-sdlc",
+  "version": "0.2.0",
+  "description": "A vibecoding framework that takes a project through the SDLC (concept, requirements, design, construction, acceptance, deployment, evolve). Every step runs the same cycle: plan, challenge, implement, verify, update. State is kept in the repo so any fresh chat can resume.",
+  "author": {
+    "name": "Jaakko Lipponen"
+  },
+  "license": "MIT",
+  "keywords": ["sdlc", "vibecoding", "requirements", "planning", "roadmap", "workflow"]
+}
